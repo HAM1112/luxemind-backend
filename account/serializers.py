@@ -7,7 +7,7 @@ from providers.models import Provider
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('first_name' , 'last_name' , 'age' , 'email' , 'password', 'username')
+        fields = ( 'email' , 'password', 'username')
         extra_kwargs = {'password' : {'write_only' : True}}
         
     def create(self, validated_data):
@@ -21,7 +21,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 class ProviderRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Provider
-        fields = ('username' , 'email' , 'age' , 'education' , 'password')
+        fields = ('username' , 'email'  , 'education' , 'password')
         extra_kwargs = {'password' : {'write_only' : True}}
     
     def create(self, validated_data):
@@ -33,7 +33,6 @@ class ProviderRegisterSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
     
-
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

@@ -10,7 +10,8 @@ from .serializers import  (
     UserSerializer
     )
 
-from .utils import create_jwt_pair_tokens
+
+
 
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
@@ -21,48 +22,27 @@ from rest_framework.permissions import AllowAny
 from rest_framework import generics
 
 
-class Login(APIView):
-    permission_classes = [AllowAny]
-    def post(self, request):
-        
-        email = request.data.get('email')
-        password = request.data.get('password')
-        user = authenticate(request, email=email, password=password)
-        
-        if user is not None:
-            if user.is_active:
-                tokens = create_jwt_pair_tokens(user)
-                refresh_token = RefreshToken(tokens['refresh'])
-                serializer_user = None
-                if user.is_provider:
-                    real_user =  Provider.objects.get(email=email)
-                    serializer_user = ProviderSerializer(real_user)
-                else:
-                    real_user = CustomUser.objects.get(email=email)
-                    serializer_user = UserSerializer(real_user)
-                response  = {
-                    'message' : 'Login Successful',
-                    "access_token": tokens['access'],
-                    "refresh_token": tokens['refresh'],
-                    "token_expiry": refresh_token['exp'],
-                    'user' : serializer_user.data
-                }
-                
-                return Response(data=response, status=status.HTTP_200_OK)
-            else:
-                response = {
-                    "message" : "user is not verified"
-                }
-                return Response(data=response, status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION)
-        
-        else:
-            print("there is an error")
-            return Response(data={"message" : "Invalid email or password !"}, status=status.HTTP_400_BAD_REQUEST)
-        
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims
+        token['username'] = user.username
+        token['is_superuser'] = user.is_superuser
+        token['is_provider'] = user.is_provider
+        # ...
+
+        return token
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
+
 
 class RegisterView(generics.CreateAPIView):
     permission_classes = [AllowAny]
-    
     def post(self, request, *args, **kwargs):
         reg_serilizer = RegisterSerializer(data=request.data)
         if reg_serilizer.is_valid():
