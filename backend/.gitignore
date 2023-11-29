@@ -4,3 +4,9 @@ db.sqlite3
 /env
 *.en
 .vscode
+**/migrations/*
+migrations
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
+**/**/migrations
