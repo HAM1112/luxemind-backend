@@ -21,16 +21,18 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=30, unique=True)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
+    first_name = models.CharField(max_length=30 , blank=True)
+    last_name = models.CharField(max_length=30, blank=True)
     date_joined = models.DateTimeField(default=timezone.now)
-    age = models.IntegerField(null=True)
+    dob = models.DateField(null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_provider = models.BooleanField(default=False)
+    education = models.CharField(max_length=100 , blank=True)
+    avatar = models.CharField(max_length=200 , blank=True)
+    
 
     objects = CustomUserManager()
-
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
