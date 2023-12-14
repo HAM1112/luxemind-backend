@@ -17,3 +17,8 @@ class ProviderSerializer(ModelSerializer):
     class Meta:
         model = Provider
         fields = '__all__'
+        
+class UserSerializer(ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = '__all__'
