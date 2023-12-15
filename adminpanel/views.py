@@ -91,3 +91,9 @@ def approver_course(request , course_id):
     return Response(serializer.data, status=status.HTTP_200_OK)
     
     
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_details(request , user_id):
+    user = CustomUser.objects.get(id=user_id)
+    serializer = UserSerializer(user)
+    return Response(serializer.data)
