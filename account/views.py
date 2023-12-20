@@ -63,5 +63,5 @@ class ProviderRegisterView(generics.CreateAPIView):
             newprov = reg_serilizer.save()
             if newprov :
                 print('provider created')
-                return Response(status=status.HTTP_201_CREATED)
+                return Response(data=reg_serilizer.data ,status=status.HTTP_201_CREATED)
         return Response(reg_serilizer.errors , status=status.HTTP_400_BAD_REQUEST)
