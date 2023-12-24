@@ -53,6 +53,8 @@ class Lesson(models.Model):
     module = models.ForeignKey(Module , on_delete=models.CASCADE)
     index = models.PositiveIntegerField(blank=True , null=True)
     lesson_url = models.URLField(blank=True, null=True)
+    is_watched = models.BooleanField(default=False ,blank=True , null=True)
+    is_completed = models.BooleanField(default=False ,blank=True , null=True)
     lesson_duration = models.CharField(max_length=8, blank=True, null=True)
     
     class Meta:

@@ -5,7 +5,7 @@ from .models import *
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Provider
-        fields = ('first_name' , "last_name" , 'dob' , 'education' , 'username' , 'email' )
+        fields = '__all__'
     
 
 class SubjectSerializer(serializers.ModelSerializer):
