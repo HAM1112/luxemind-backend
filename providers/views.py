@@ -96,9 +96,12 @@ def addModule(request):
     if serializer.is_valid():
         name = serializer.validated_data['name']
         course = serializer.validated_data['course']
+        
         if not Module.objects.filter(name=name, course=course).exists():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+       
+            module_details = {"module": serializer.data, "lessons" : []}
+            return Response(module_details, status=status.HTTP_201_CREATED)
         else:
             return Response({'error': 'Module with this name already exists for the given course.'}, status=status.HTTP_400_BAD_REQUEST)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
@@ -106,12 +109,10 @@ def addModule(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def addLesson(request):
-
     serializer = LessonSerializer(data=request.data)
     if serializer.is_valid():
         name = serializer.validated_data['name']
-        module = serializer.validated_data['module']
-        
+        module = serializer.validated_data['module']       
         lesson_url = serializer.validated_data['lesson_url']
         video_clip = VideoFileClip(lesson_url)
         duration = video_clip.duration
@@ -188,3 +189,21 @@ def publish_course(request , course_id):
     course.save()
     serializer = CourseSerializer(course)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_lesson_details(request , lesson_id):
+    try:
+        lesson = Lesson.objects.select_related('module__course').get(id=lesson_id)
+    except Lesson.DoesNotExist:
+        return Response({"error": "Lesson not found"}, status=404)
+    lesson_serializer = LessonSerializer(lesson)
+    module_serializer = ModuleSerializer(lesson.module)
+    course_serializer = CourseSerializer(lesson.module.course)
+    
+    lesson_data = {
+        'lesson' : lesson_serializer.data,
+        'module' : module_serializer.data,
+        'course' : course_serializer.data
+    }
+    return Response(lesson_data)

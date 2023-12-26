@@ -15,5 +15,5 @@ urlpatterns = [
     path('delete_module/<int:module_id>/', delete_module, name='delete_module'),
     path('delete_lesson/<int:lesson_id>/', delete_lesson, name='delete_lesson'),
     path('publish_course/<int:course_id>', publish_course , name='publish_course'),
-    
+    path('get_lesson_details/<int:lesson_id>' , get_lesson_details , name='lesson-details')
 ]
