@@ -95,5 +95,9 @@ def approver_course(request , course_id):
 @permission_classes([IsAuthenticated])
 def get_user_details(request , user_id):
     user = CustomUser.objects.get(id=user_id)
+    if user.is_provider :
+        user = Provider.objects.get(id=user_id)
+        serializer = ProviderSerializer(user)
+        return Response(serializer.data)
     serializer = UserSerializer(user)
     return Response(serializer.data)
