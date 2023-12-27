@@ -7,6 +7,11 @@ class Provider(CustomUser):
     profession = models.CharField(max_length=100 , blank=True)
     storage_allocated = models.DecimalField(max_digits=5,decimal_places=1,default=2.0)
     rating = models.FloatField(default=0.0)
+    about_me = models.TextField(blank=True)
+    linked_in_link = models.CharField(max_length=255, unique=True , blank=True , null=True)
+    insta_link = models.CharField(max_length=255, unique=True , blank=True , null=True)
+    youtube_link = models.CharField(max_length=255, unique=True , blank=True , null=True)
+    
 
 class Subject(models.Model):
     name = models.CharField(max_length=255)

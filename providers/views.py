@@ -33,9 +33,6 @@ class UpdateProfile(APIView):
 @permission_classes([AllowAny])
 def addCourse(request):
     mutable_data = request.data.copy()
-    print(request.data)
-    print(request.user)
-    
     mutable_data['provider'] = request.user.pk
     serializer = CourseSerializer(data=mutable_data)
     if serializer.is_valid():
