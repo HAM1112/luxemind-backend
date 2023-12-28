@@ -4,6 +4,7 @@ from .views import *
 
 urlpatterns = [
     path('profile/' , views.profileView , name="stud-profile"),
+    path('update-profile/', updateProfie, name='update_profile'),
     path('delete' , views.deleteAccount , name="stud-delete"),
     path('get_all_published_courses/' , get_all_published_courses , name='all_pub_courses'),
     
