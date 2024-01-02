@@ -8,9 +8,9 @@ class Provider(CustomUser):
     storage_allocated = models.DecimalField(max_digits=5,decimal_places=1,default=2.0)
     rating = models.FloatField(default=0.0)
     about_me = models.TextField(blank=True)
-    linked_in_link = models.CharField(max_length=255, unique=True , blank=True , null=True)
-    insta_link = models.CharField(max_length=255, unique=True , blank=True , null=True)
-    youtube_link = models.CharField(max_length=255, unique=True , blank=True , null=True)
+    linked_in_link = models.CharField(max_length=255, blank=True , null=True)
+    insta_link = models.CharField(max_length=255, blank=True , null=True)
+    youtube_link = models.CharField(max_length=255, blank=True , null=True)
     
 
 class Subject(models.Model):
@@ -27,9 +27,9 @@ class Course(models.Model):
     course_price = models.DecimalField(max_digits=10, decimal_places=2)
     no_of_enrolls = models.PositiveIntegerField(blank=True , null=True)
     no_of_days = models.PositiveIntegerField(blank=True , null=True)
-    certificate_url = models.URLField(blank=True, null=True)
-    course_thumbnail = models.URLField(blank=True, null=True)
-    course_preview = models.URLField(blank=True, null=True)
+    certificate_url = models.URLField(max_length=500,blank=True, null=True)
+    course_thumbnail = models.URLField(max_length=500,blank=True, null=True)
+    course_preview = models.URLField(max_length=500,blank=True, null=True)
     level = models.CharField(max_length=50 ,blank=True , null=True)
     prerequisites = models.TextField(blank=True, null=True)
     no_of_views = models.PositiveIntegerField(default=0 , blank=True , null=True)

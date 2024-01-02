@@ -35,7 +35,6 @@ class CourseSerializer(serializers.ModelSerializer):
         if nested_data:
             # Your logic to update nested field
             pass
-
         # Continue with the regular update logic for other fields
         instance = super().update(instance, validated_data)
 
