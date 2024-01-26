@@ -28,6 +28,7 @@ class UpdateProfile(APIView):
 
     def get(self, request, *args, **kwargs):
         user_id = request.user.id
+        print(user_id)
         provider = Provider.objects.get(id=user_id)
         serializer = ProfileSerializer(provider)
         print(serializer.data)
@@ -75,14 +76,22 @@ def getCourseDetails(request, course_id):
     review_serializer = DisplayRatingSerializer(reviews, many=True)
     provider_serializer = ProfileSerializer(provider)
     course_serializer = CourseSerializer(course)
-    module = Module.objects.filter(course=course)[0]
-    lesson = Lesson.objects.filter(module=module)[0]
-    lesson_serializer = LessonSerializer(lesson)
+    
+    try:
+        module = Module.objects.filter(course=course)[0]
+        lesson = Lesson.objects.filter(module=module)[0]
+        lesson_serializer = LessonSerializer(lesson)
+        
+        lesson_to_add = lesson_serializer.data
+    except Exception as e:
+        lesson_to_add = ''
+    
+    
     combined_data = {
         "provider": provider_serializer.data,
         "course": course_serializer.data,
         "subject": course.subject.name,
-        "lesson": lesson_serializer.data,
+        "lesson": lesson_to_add,
         "no_enrolls": enrolls.count(),
         "reviews": review_serializer.data,
     }
